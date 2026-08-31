@@ -10,6 +10,7 @@ import {
   ArrowRightLeft,
   Power,
   ChevronDown,
+  CheckCircle,
 } from 'lucide-react';
 import { AccessCode, School, AccessCodeStatus } from '../../types';
 import { accessCodesApi } from '../../api/accessCodesApi';
@@ -465,6 +466,16 @@ export const AccessCodesPage: React.FC = () => {
                                 <Power className="w-4 h-4" />
                               </button>
                             </>
+                          )}
+
+                          {item.status === 'INACTIVE' && (
+                            <button
+                              onClick={() => setCodeToToggle(item)}
+                              title="Reactivate Access Code"
+                              className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors"
+                            >
+                              <CheckCircle className="w-4 h-4" />
+                            </button>
                           )}
                         </div>
                       </td>

@@ -272,7 +272,8 @@ export interface UpdateTopicPayload {
 }
 
 export interface CreateContentPayload {
-  topicId: number;
+  chapterId?: number;
+  topicId?: number;
   title: string;
   type: ContentType;
   url: string;
@@ -283,6 +284,7 @@ export interface CreateContentPayload {
 }
 
 export interface UpdateContentPayload {
+  chapterId?: number;
   topicId?: number;
   title?: string;
   type?: ContentType;

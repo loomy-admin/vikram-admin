@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, UploadCloud, Link as LinkIcon, FileText, Video, Image as ImageIcon, Globe, Check } from 'lucide-react';
-import { ContentItem, TopicItem, CreateContentPayload, UpdateContentPayload, ContentType, ContentStatus } from '../../types';
+import { ContentItem, TopicItem, ChapterItem, CreateContentPayload, UpdateContentPayload, ContentType, ContentStatus } from '../../types';
 import { contentApi } from '../../api/contentApi';
 import { getErrorMessage } from '../../api/axios';
 import { useToast } from '../../context/ToastContext';
@@ -10,7 +10,8 @@ interface ContentFormDialogProps {
   onClose: () => void;
   onSubmit: (data: CreateContentPayload | UpdateContentPayload) => Promise<void>;
   contentToEdit?: ContentItem | null;
-  topic: TopicItem;
+  topic?: TopicItem | null;
+  chapter?: ChapterItem | null;
   isLoading?: boolean;
 }
 
@@ -20,6 +21,7 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
   onSubmit,
   contentToEdit,
   topic,
+  chapter,
   isLoading = false,
 }) => {
   const { showSuccess, showError } = useToast();
@@ -32,7 +34,7 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
   const [order, setOrder] = useState<number>(0);
   const [status, setStatus] = useState<ContentStatus>('VISIBLE');
 
-  const [sourceMode, setSourceMode] = useState<'upload' | 'url'>('url');
+  const [sourceMode, setSourceMode] = useState<'upload' | 'url'>('upload');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -55,7 +57,7 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
       setDescription('');
       setOrder(0);
       setStatus('VISIBLE');
-      setSourceMode('url');
+      setSourceMode('upload');
     }
     setSelectedFile(null);
     setUploadProgress(0);
@@ -107,7 +109,8 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
     if (!validate()) return;
 
     await onSubmit({
-      topicId: topic.id,
+      topicId: topic ? topic.id : undefined,
+      chapterId: chapter ? chapter.id : undefined,
       title: title.trim(),
       type,
       url: url.trim(),
@@ -125,7 +128,9 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
             <h3 className="text-base font-bold text-slate-900">
               {contentToEdit ? 'Edit Learning Content' : 'Add Learning Content'}
             </h3>
-            <p className="text-xs text-slate-500">Topic: {topic.name}</p>
+            <p className="text-xs text-slate-500">
+              {topic ? `Topic: ${topic.name}` : chapter ? `Chapter: ${chapter.name}` : 'Curriculum Content'}
+            </p>
           </div>
           <button onClick={onClose} disabled={isLoading || isUploading} className="text-slate-400 hover:text-slate-600 p-1">
             <X className="w-5 h-5" />
@@ -181,13 +186,23 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
             {errors.title && <p className="text-xs text-rose-500 mt-1">{errors.title}</p>}
           </div>
 
-          {/* Source Mode Toggle: Upload vs Direct URL */}
+          {/* Source Mode Toggle: Upload File vs Direct URL */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-semibold text-slate-700">
                 Content Source <span className="text-rose-500">*</span>
               </label>
               <div className="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg text-xs">
+                <button
+                  type="button"
+                  onClick={() => setSourceMode('upload')}
+                  className={`px-2.5 py-1 rounded-md transition-all ${
+                    sourceMode === 'upload' ? 'bg-white text-slate-900 font-semibold shadow-xs' : 'text-slate-600'
+                  }`}
+                >
+                  <UploadCloud className="w-3.5 h-3.5 inline mr-1" />
+                  Upload File (Primary)
+                </button>
                 <button
                   type="button"
                   onClick={() => setSourceMode('url')}
@@ -198,35 +213,10 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
                   <LinkIcon className="w-3.5 h-3.5 inline mr-1" />
                   URL / Web
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setSourceMode('upload')}
-                  className={`px-2.5 py-1 rounded-md transition-all ${
-                    sourceMode === 'upload' ? 'bg-white text-slate-900 font-semibold shadow-xs' : 'text-slate-600'
-                  }`}
-                >
-                  <UploadCloud className="w-3.5 h-3.5 inline mr-1" />
-                  Upload File
-                </button>
               </div>
             </div>
 
-            {sourceMode === 'url' ? (
-              <div>
-                <input
-                  type="text"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="https://example.com/lecture.mp4 or https://youtube.com/watch?v=..."
-                  className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
-                    errors.url ? 'border-rose-400' : 'border-slate-300'
-                  }`}
-                />
-                <p className="text-xs text-slate-500 mt-1">
-                  Enter a direct media URL, YouTube URL, cloud document link, or web resource.
-                </p>
-              </div>
-            ) : (
+            {sourceMode === 'upload' ? (
               <div className="space-y-2">
                 <input
                   type="file"
@@ -237,14 +227,14 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
                 />
                 <div
                   onClick={() => fileInputRef.current?.click()}
-                  className="border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl p-5 text-center cursor-pointer bg-slate-50 hover:bg-blue-50/30 transition-all"
+                  className="border-2 border-dashed border-blue-300 hover:border-blue-500 rounded-xl p-5 text-center cursor-pointer bg-blue-50/40 hover:bg-blue-50/70 transition-all"
                 >
-                  <UploadCloud className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-                  <p className="text-xs font-semibold text-slate-700">
+                  <UploadCloud className="w-8 h-8 text-blue-600 mx-auto mb-2" />
+                  <p className="text-xs font-bold text-slate-800">
                     {selectedFile ? selectedFile.name : 'Click to browse and upload file'}
                   </p>
                   <p className="text-[11px] text-slate-500 mt-0.5">
-                    Supports PDFs, MP4s, WebM, PNG, JPG (uploaded via Express backend storage)
+                    Supports PDFs, MP4s (no duration limit), WebM, PNG, JPG (up to 2GB)
                   </p>
                 </div>
 
@@ -269,6 +259,21 @@ export const ContentFormDialog: React.FC<ContentFormDialogProps> = ({
                     <span>File uploaded and linked: {url}</span>
                   </div>
                 )}
+              </div>
+            ) : (
+              <div>
+                <input
+                  type="text"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="https://example.com/lecture.mp4 or https://youtube.com/watch?v=..."
+                  className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
+                    errors.url ? 'border-rose-400' : 'border-slate-300'
+                  }`}
+                />
+                <p className="text-xs text-slate-500 mt-1">
+                  Enter a direct media URL, YouTube URL, cloud document link, or web resource.
+                </p>
               </div>
             )}
             {errors.url && <p className="text-xs text-rose-500 mt-1">{errors.url}</p>}
