@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Phone, Mail, Building2, BookOpen, KeyRound, Calendar, Power, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Phone, Mail, Building2, BookOpen, KeyRound, Calendar, Power, CheckCircle, Clock } from 'lucide-react';
 import { Student, StudentStatus } from '../../types';
 import { studentsApi } from '../../api/studentsApi';
 import { StatusChip } from '../../components/common/StatusChip';
@@ -164,6 +164,23 @@ export const StudentDetailsPage: React.FC<StudentDetailsPageProps> = ({
               </span>
               <span className="text-xs text-slate-700">
                 {student.createdAt ? new Date(student.createdAt).toLocaleDateString() : 'N/A'}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+              <span className="text-xs text-slate-500 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-500" /> Last Activity
+              </span>
+              <span className="text-xs font-semibold text-slate-900">
+                {(student.lastLoginAt || student.lastLogin)
+                  ? new Date(student.lastLoginAt || student.lastLogin!).toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
+                  : 'Never logged in'}
               </span>
             </div>
           </div>

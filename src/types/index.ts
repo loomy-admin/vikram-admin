@@ -75,6 +75,9 @@ export interface Student {
   createdAt?: string;
   updatedAt?: string;
   lastLoginAt?: string | null;
+  lastLogin?: string | null;
+  assignedAccessCode?: string | null;
+  accessCodeStatus?: string | null;
   school?: {
     id: number;
     name: string;

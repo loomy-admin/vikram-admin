@@ -5,6 +5,8 @@ export interface ListStudentsParams {
   page?: number;
   limit?: number;
   search?: string;
+  name?: string;
+  accessCode?: string;
   schoolId?: number;
   classId?: number;
   status?: StudentStatus;
