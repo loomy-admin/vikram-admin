@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Building2, Users, KeyRound, CheckCircle2, CircleDashed, BookOpen, Layers, ArrowRight } from 'lucide-react';
+import {
+  Building2,
+  Users,
+  KeyRound,
+  CheckCircle2,
+  CircleDashed,
+  BookOpen,
+  Layers,
+  ArrowRight,
+  RotateCw,
+  Power,
+  GraduationCap,
+} from 'lucide-react';
 import { dashboardApi } from '../../api/dashboardApi';
 import { DashboardStats } from '../../types';
-import { StatCard } from '../../components/common/StatCard';
 import { CardSkeleton } from '../../components/common/LoadingSkeleton';
 import { ErrorAlert } from '../../components/common/ErrorAlert';
 import { getErrorMessage } from '../../api/axios';
@@ -34,172 +45,337 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Top Banner / Heading */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-7 pb-8">
+      {/* Header Section */}
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-xl font-bold text-slate-900">System Overview</h2>
-          <p className="text-sm text-slate-500">
-            Real-time platform metrics and core operational counters
+          <h1 className="text-3xl font-black text-[#12335f] tracking-tight">Dashboard</h1>
+          <p className="text-sm text-[#60728a] mt-1">
+            Monitor partner schools, student activity, 10-digit access codes, and learning content in real-time.
           </p>
         </div>
-      </div>
+        <button
+          onClick={loadDashboard}
+          disabled={isLoading}
+          className="self-start sm:self-center flex items-center gap-2 px-4 py-2.5 bg-white border border-[#c8def5] rounded-xl shadow-xs text-xs font-bold text-[#0f53b4] hover:bg-[#f0f7ff] disabled:opacity-50 transition-all cursor-pointer"
+        >
+          <RotateCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+          Refresh Data
+        </button>
+      </header>
 
       {error && <ErrorAlert message={error} onRetry={loadDashboard} />}
 
-      {/* Primary Statistics Grid */}
       {isLoading ? (
-        <CardSkeleton count={5} />
+        <CardSkeleton count={6} />
       ) : stats ? (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <StatCard
-              title="Total Schools"
-              value={stats.totalSchools}
-              subtitle="Registered partner schools"
-              icon={Building2}
-              variant="blue"
-            />
-            <StatCard
-              title="Total Students"
-              value={stats.totalStudents}
-              subtitle={`${stats.activeStudents} active students`}
-              icon={Users}
-              variant="violet"
-            />
-            <StatCard
-              title="Total Access Codes"
-              value={stats.totalAccessCodes}
-              subtitle="10-digit credentials"
-              icon={KeyRound}
-              variant="slate"
-            />
-            <StatCard
-              title="Used Codes"
-              value={stats.usedCodes}
-              subtitle="Redeemed by students"
-              icon={CheckCircle2}
-              variant="emerald"
-            />
-            <StatCard
-              title="Unused Codes"
-              value={stats.unusedCodes}
-              subtitle="Available for allocation"
-              icon={CircleDashed}
-              variant="amber"
-            />
+        <div className="space-y-8">
+          {/* Real-time Operations Overview Banner */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0f53b4] via-[#2e79cc] to-[#3791f4] text-white p-6 sm:p-7 shadow-lg shadow-blue-900/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="relative z-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-blue-200">
+                Cortex Admin Console
+              </span>
+              <h2 className="text-xl sm:text-2xl font-bold mt-1 text-white">
+                Real-time Platform Operations
+              </h2>
+              <p className="text-sm text-blue-100 mt-1.5 max-w-2xl leading-relaxed">
+                Supervising registered partner schools, active student accounts, 10-digit access code distribution, and published learning curriculum.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0 relative z-10">
+              <div className="flex items-center gap-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span className="text-xs font-bold tracking-wide text-white">Live Connected</span>
+              </div>
+              <div className="bg-blue-500/30 px-3.5 py-1.5 rounded-full border border-blue-400/20 text-xs font-bold text-white">
+                Active System
+              </div>
+            </div>
+
+            {/* Abstract Background Shapes */}
+            <div className="absolute right-0 bottom-0 translate-x-12 translate-y-12 w-56 h-56 border-[24px] border-white/10 rounded-full pointer-events-none" />
+            <div className="absolute right-28 top-0 -translate-y-12 w-36 h-36 bg-white/5 rounded-full blur-2xl pointer-events-none" />
           </div>
 
-          {/* Secondary Stats & Quick Navigation Row */}
+          {/* Section 1: Schools & Student Registry Metrics */}
+          <div>
+            <h3 className="text-base font-bold text-[#12335f] mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-4 bg-[#0f53b4] rounded-full" />
+              Schools & Student Registry
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {/* Total Schools */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Partner Schools
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#e8f2ff] text-[#0f53b4] flex items-center justify-center">
+                    <Building2 className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-[#12335f]">{stats.totalSchools}</div>
+                  <p className="text-xs text-[#60728a] mt-1">Registered Institutions</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-[#60728a]">Total Classes</span>
+                  <span className="font-bold text-[#12335f]">{stats.totalClasses}</span>
+                </div>
+              </div>
+
+              {/* Total Students */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Total Students
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#edf0ff] text-[#384db8] flex items-center justify-center">
+                    <Users className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-[#12335f]">{stats.totalStudents}</div>
+                  <p className="text-xs text-[#60728a] mt-1">Learner Registrations</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-[#60728a]">Active Accounts</span>
+                  <span className="font-bold text-emerald-600">{stats.activeStudents}</span>
+                </div>
+              </div>
+
+              {/* Active Students */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Active Learners
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#e5f7ef] text-[#0a7a57] flex items-center justify-center">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-emerald-600">{stats.activeStudents}</div>
+                  <p className="text-xs text-[#60728a] mt-1">Activated with Code</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-[#60728a]">Pending Approval</span>
+                  <span className="font-bold text-amber-600">{stats.pendingStudents}</span>
+                </div>
+              </div>
+
+              {/* Pending Approvals */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Pending Students
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#fff1dc] text-[#a75b00] flex items-center justify-center">
+                    <CircleDashed className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className={`text-3xl font-black ${stats.pendingStudents > 0 ? 'text-[#a75b00]' : 'text-[#12335f]'}`}>
+                    {stats.pendingStudents}
+                  </div>
+                  <p className="text-xs text-[#60728a] mt-1">Awaiting Code Activation</p>
+                </div>
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                  <span className="text-[#60728a]">Total Registered</span>
+                  <span className="font-bold text-[#12335f]">{stats.totalStudents}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Access Code Distribution */}
+          <div>
+            <h3 className="text-base font-bold text-[#12335f] mb-4 flex items-center gap-2">
+              <span className="w-1.5 h-4 bg-sky-600 rounded-full" />
+              10-Digit Access Code Credentials
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {/* Total Access Codes */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Total Codes
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#e8f2ff] text-[#0f53b4] flex items-center justify-center">
+                    <KeyRound className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-[#12335f]">{stats.totalAccessCodes}</div>
+                  <p className="text-xs text-[#60728a] mt-1">Generated Credentials</p>
+                </div>
+              </div>
+
+              {/* Used Codes */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Redeemed (Used)
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#e5f7ef] text-[#0a7a57] flex items-center justify-center">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-emerald-600">{stats.usedCodes}</div>
+                  <p className="text-xs text-[#60728a] mt-1">Linked to Student Accounts</p>
+                </div>
+              </div>
+
+              {/* Unused Codes */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Unused Available
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#e3f7fb] text-[#08789a] flex items-center justify-center">
+                    <CircleDashed className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-[#08789a]">{stats.unusedCodes}</div>
+                  <p className="text-xs text-[#60728a] mt-1">Available for Student Use</p>
+                </div>
+              </div>
+
+              {/* Inactive Codes */}
+              <div className="bg-white border border-[#dcebf9] rounded-xl p-5 shadow-[0_18px_38px_rgba(18,51,95,0.06)] flex flex-col justify-between">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-bold text-[#40566f] uppercase tracking-wider">
+                    Disabled Codes
+                  </span>
+                  <div className="w-9 h-9 rounded-lg bg-[#ffebe8] text-[#b42318] flex items-center justify-center">
+                    <Power className="w-5 h-5" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-3xl font-black text-rose-600">{stats.inactiveCodes}</div>
+                  <p className="text-xs text-[#60728a] mt-1">Soft-Disabled Credentials</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Management Shortcuts & Curriculum */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Quick Actions Card */}
-            <div className="lg:col-span-2 bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
-              <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                Management Shortcuts
+            {/* Quick Actions Shortcuts */}
+            <div className="lg:col-span-2 bg-white rounded-xl border border-[#dcebf9] p-6 shadow-[0_18px_38px_rgba(18,51,95,0.06)] space-y-4">
+              <h3 className="text-xs font-bold text-[#12335f] uppercase tracking-wider">
+                Management Operations Shortcuts
               </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <button
                   onClick={() => onNavigate('/schools')}
-                  className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-blue-300 hover:bg-blue-50/30 transition-all text-left group"
+                  className="flex items-center justify-between p-4 rounded-xl border border-[#dcebf9] hover:border-[#0f53b4] hover:bg-[#f0f7ff] transition-all text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                    <div className="p-2.5 rounded-lg bg-[#e8f2ff] text-[#0f53b4] group-hover:bg-[#0f53b4] group-hover:text-white transition-colors">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-slate-900">Schools Directory</p>
-                      <p className="text-xs text-slate-500">Register and manage partner schools</p>
+                      <p className="text-sm font-bold text-[#12335f]">Schools Directory</p>
+                      <p className="text-xs text-[#60728a]">Register & manage partner schools</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#0f53b4] transition-colors" />
                 </button>
 
                 <button
                   onClick={() => onNavigate('/access-codes')}
-                  className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-sky-300 hover:bg-sky-50/30 transition-all text-left group"
+                  className="flex items-center justify-between p-4 rounded-xl border border-[#dcebf9] hover:border-[#0f53b4] hover:bg-[#f0f7ff] transition-all text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-sky-50 text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                    <div className="p-2.5 rounded-lg bg-[#e3f7fb] text-[#08789a] group-hover:bg-[#08789a] group-hover:text-white transition-colors">
                       <KeyRound className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-slate-900">Access Code Generator</p>
-                      <p className="text-xs text-slate-500">Generate single or bulk 10-digit codes</p>
+                      <p className="text-sm font-bold text-[#12335f]">Access Codes Control</p>
+                      <p className="text-xs text-[#60728a]">Generate & soft-disable credentials</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-sky-600 transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#08789a] transition-colors" />
                 </button>
 
                 <button
                   onClick={() => onNavigate('/students')}
-                  className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-violet-300 hover:bg-violet-50/30 transition-all text-left group"
+                  className="flex items-center justify-between p-4 rounded-xl border border-[#dcebf9] hover:border-[#0f53b4] hover:bg-[#f0f7ff] transition-all text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-violet-50 text-violet-600 group-hover:bg-violet-600 group-hover:text-white transition-colors">
+                    <div className="p-2.5 rounded-lg bg-[#edf0ff] text-[#384db8] group-hover:bg-[#384db8] group-hover:text-white transition-colors">
                       <Users className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-slate-900">Student Registry</p>
-                      <p className="text-xs text-slate-500">Review status and school assignments</p>
+                      <p className="text-sm font-bold text-[#12335f]">Student Registry</p>
+                      <p className="text-xs text-[#60728a]">Filters, timestamps & approvals</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-violet-600 transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#384db8] transition-colors" />
                 </button>
 
                 <button
                   onClick={() => onNavigate('/content')}
-                  className="flex items-center justify-between p-4 rounded-xl border border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 transition-all text-left group"
+                  className="flex items-center justify-between p-4 rounded-xl border border-[#dcebf9] hover:border-[#0f53b4] hover:bg-[#f0f7ff] transition-all text-left group cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                    <div className="p-2.5 rounded-lg bg-[#e5f7ef] text-[#0a7a57] group-hover:bg-[#0a7a57] group-hover:text-white transition-colors">
                       <BookOpen className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-slate-900">Curriculum Content</p>
-                      <p className="text-xs text-slate-500">Class, Subject, Chapter, Topic & Media</p>
+                      <p className="text-sm font-bold text-[#12335f]">Curriculum Content</p>
+                      <p className="text-xs text-[#60728a]">Classes, Subjects, Topics & Materials</p>
                     </div>
                   </div>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#0a7a57] transition-colors" />
                 </button>
               </div>
             </div>
 
             {/* Curriculum Breakdown */}
-            <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4 flex flex-col justify-between">
+            <div className="bg-white rounded-xl border border-[#dcebf9] p-6 shadow-[0_18px_38px_rgba(18,51,95,0.06)] space-y-4 flex flex-col justify-between">
               <div>
-                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">
-                  Curriculum Summary
+                <h3 className="text-xs font-bold text-[#12335f] uppercase tracking-wider mb-4">
+                  Curriculum Breakdown
                 </h3>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
-                    <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
-                      <Layers className="w-4 h-4 text-blue-600" />
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-[#f7fbff] border border-[#dcebf9]">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-[#40566f]">
+                      <Layers className="w-4 h-4 text-[#0f53b4]" />
                       <span>Total Classes / Grades</span>
                     </div>
-                    <span className="text-sm font-bold text-slate-900">{stats.totalClasses || 0}</span>
+                    <span className="text-sm font-black text-[#12335f]">{stats.totalClasses || 0}</span>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
-                    <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-[#f7fbff] border border-[#dcebf9]">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-[#40566f]">
                       <BookOpen className="w-4 h-4 text-emerald-600" />
                       <span>Total Subjects</span>
                     </div>
-                    <span className="text-sm font-bold text-slate-900">{stats.totalSubjects || 0}</span>
+                    <span className="text-sm font-black text-[#12335f]">{stats.totalSubjects || 0}</span>
                   </div>
 
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100">
-                    <div className="flex items-center gap-2 text-xs font-medium text-slate-600">
-                      <CheckCircle2 className="w-4 h-4 text-violet-600" />
-                      <span>Published Content Items</span>
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-[#f7fbff] border border-[#dcebf9]">
+                    <div className="flex items-center gap-2 text-xs font-semibold text-[#40566f]">
+                      <GraduationCap className="w-4 h-4 text-violet-600" />
+                      <span>Published Media Items</span>
                     </div>
-                    <span className="text-sm font-bold text-slate-900">{stats.totalContents || 0}</span>
+                    <span className="text-sm font-black text-[#12335f]">{stats.totalContents || 0}</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-100 text-xs text-slate-500">
-                <span>Inactive access codes: </span>
-                <span className="font-semibold text-slate-700">{stats.inactiveCodes}</span>
+              <div className="pt-3 border-t border-slate-100 text-xs text-[#60728a] flex items-center justify-between">
+                <span>Disabled Access Codes</span>
+                <span className="font-bold text-rose-600">{stats.inactiveCodes}</span>
               </div>
             </div>
           </div>

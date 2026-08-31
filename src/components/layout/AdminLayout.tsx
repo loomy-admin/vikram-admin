@@ -21,8 +21,8 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex bg-slate-50 text-slate-900">
-      {/* Sidebar */}
+    <div className="min-h-screen flex bg-gradient-to-b from-[#f7fbff] via-white to-white text-[#12335f]">
+      {/* Fixed/Sticky Corporate Blue Sidebar */}
       <Sidebar
         currentPath={currentPath}
         onNavigate={onNavigate}
@@ -39,7 +39,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({
           title={title}
           breadcrumbs={breadcrumbs}
         />
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-[1600px] w-full mx-auto">
           {children}
         </main>
       </div>

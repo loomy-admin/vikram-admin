@@ -2,6 +2,18 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased font-sans;
+    font-family: "Outfit", "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
+    background: #f7fbff;
+    color: #12335f;
+    -webkit-font-smoothing: antialiased;
   }
+}
+
+/* Custom Scrollbar for Sidebar */
+.custom-sidebar-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.custom-sidebar-scroll::-webkit-scrollbar {
+  display: none;
 }
