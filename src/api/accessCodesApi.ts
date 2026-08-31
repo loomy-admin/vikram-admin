@@ -72,6 +72,11 @@ export const accessCodesApi = {
     return res.data.data!;
   },
 
+  async bulkUpdateStatus(ids: number[], status: AccessCodeStatus): Promise<{ updatedCount: number; status: AccessCodeStatus }> {
+    const res = await apiClient.patch<ApiResponse<any>>('/admin/access-codes/bulk-status', { ids, status });
+    return res.data.data!;
+  },
+
   async reassign(id: number, schoolId: number): Promise<AccessCode> {
     const res = await apiClient.put<ApiResponse<AccessCode>>(`/admin/access-codes/${id}/reassign`, { schoolId });
     return res.data.data!;
