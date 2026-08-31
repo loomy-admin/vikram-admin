@@ -111,8 +111,8 @@ export const AccessCodesPage: React.FC = () => {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Checkbox selection logic
-  const selectableCodes = codes.filter((c) => c.status !== 'USED');
+  // Checkbox selection logic - Only UNUSED codes can be selected & disabled
+  const selectableCodes = codes.filter((c) => c.status === 'UNUSED');
   const allSelectableOnPageSelected =
     selectableCodes.length > 0 && selectableCodes.every((c) => selectedIds.includes(c.id));
 
@@ -375,7 +375,7 @@ export const AccessCodesPage: React.FC = () => {
               <tbody className="divide-y divide-slate-200">
                 {codes.map((item) => {
                   const isChecked = selectedIds.includes(item.id);
-                  const isSelectable = item.status !== 'USED';
+                  const isSelectable = item.status === 'UNUSED';
 
                   return (
                     <tr
@@ -391,7 +391,7 @@ export const AccessCodesPage: React.FC = () => {
                           disabled={!isSelectable}
                           checked={isChecked}
                           onChange={() => handleToggleSelectRow(item.id)}
-                          className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 disabled:opacity-40 cursor-pointer"
+                          className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed"
                         />
                       </td>
 
@@ -449,27 +449,22 @@ export const AccessCodesPage: React.FC = () => {
                       <td className="px-6 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           {item.status === 'UNUSED' && (
-                            <button
-                              onClick={() => setCodeToReassign(item)}
-                              title="Reassign School"
-                              className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
-                            >
-                              <ArrowRightLeft className="w-4 h-4" />
-                            </button>
-                          )}
-
-                          {item.status !== 'USED' && (
-                            <button
-                              onClick={() => setCodeToToggle(item)}
-                              title={item.status === 'UNUSED' ? 'Disable Code' : 'Reactivate Code'}
-                              className={`p-1.5 rounded-lg transition-colors ${
-                                item.status === 'UNUSED'
-                                  ? 'text-slate-400 hover:text-rose-600 hover:bg-rose-50'
-                                  : 'text-slate-400 hover:text-emerald-600 hover:bg-emerald-50'
-                              }`}
-                            >
-                              <Power className="w-4 h-4" />
-                            </button>
+                            <>
+                              <button
+                                onClick={() => setCodeToReassign(item)}
+                                title="Reassign School"
+                                className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                              >
+                                <ArrowRightLeft className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => setCodeToToggle(item)}
+                                title="Disable Access Code"
+                                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                              >
+                                <Power className="w-4 h-4" />
+                              </button>
+                            </>
                           )}
                         </div>
                       </td>
