@@ -10,8 +10,6 @@ import {
   ArrowRightLeft,
   Power,
   ChevronDown,
-  X,
-  AlertTriangle,
 } from 'lucide-react';
 import { AccessCode, School, AccessCodeStatus } from '../../types';
 import { accessCodesApi } from '../../api/accessCodesApi';
@@ -24,7 +22,7 @@ import { Pagination } from '../../components/common/Pagination';
 import { GenerateCodeDialog } from '../../components/forms/GenerateCodeDialog';
 import { BulkCodeDialog } from '../../components/forms/BulkCodeDialog';
 import { ReassignCodeDialog } from '../../components/forms/ReassignCodeDialog';
-import { ConfirmDialog } from '../../components/common/ConfirmDialog';
+import { ConfirmDialog, TopCenterConfirmModal } from '../../components/common/ConfirmDialog';
 import { useToast } from '../../context/ToastContext';
 import { useDebounce } from '../../hooks/useDebounce';
 import { getErrorMessage } from '../../api/axios';
@@ -184,47 +182,22 @@ export const AccessCodesPage: React.FC = () => {
 
   return (
     <div className="space-y-6 relative">
-      {/* Top-Center Confirmation Popup (Styled after Github Collaborators UI) */}
-      {isBulkDisableModalOpen && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-start justify-center pt-16 px-4">
-          <div className="bg-slate-900 text-white rounded-2xl border border-slate-700 shadow-2xl max-w-lg w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-              <h3 className="text-base font-bold text-white flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
-                Confirm disable access codes
-              </h3>
-              <button
-                onClick={() => setIsBulkDisableModalOpen(false)}
-                className="text-slate-400 hover:text-white transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <p className="text-sm text-slate-300 leading-relaxed">
-              Once disabled, the <strong className="text-white">{selectedIds.length} selected access code(s)</strong> will no longer be redeemable for student activation, but their record history will be retained in the database.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => setIsBulkDisableModalOpen(false)}
-                className="w-full sm:w-auto px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                disabled={isBulkDisabling}
-                onClick={handleConfirmBulkDisable}
-                className="w-full sm:w-auto px-4 py-2.5 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 disabled:opacity-50 rounded-xl transition-colors shadow-sm"
-              >
-                {isBulkDisabling ? 'Disabling Codes...' : `Disable ${selectedIds.length} selected code(s)`}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Global Top-Center Light Confirmation Popup */}
+      <TopCenterConfirmModal
+        isOpen={isBulkDisableModalOpen}
+        title="Confirm disable access codes"
+        message={
+          <p className="text-sm text-[#60728a] leading-relaxed">
+            Once disabled, the <strong className="font-bold text-[#12335f]">{selectedIds.length} selected access code(s)</strong> will no longer be redeemable for student activation, but their record history will be retained in the database.
+          </p>
+        }
+        confirmText={`Disable ${selectedIds.length} selected code(s)`}
+        cancelText="Cancel"
+        confirmVariant="danger"
+        isLoading={isBulkDisabling}
+        onConfirm={handleConfirmBulkDisable}
+        onClose={() => setIsBulkDisableModalOpen(false)}
+      />
 
       {/* Header with Generation Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -367,16 +340,16 @@ export const AccessCodesPage: React.FC = () => {
 
                         {/* Dropdown Options */}
                         {isHeaderMenuOpen && (
-                          <div className="origin-top-left absolute left-0 mt-1.5 w-48 rounded-xl bg-slate-900 text-white shadow-xl border border-slate-700 py-1.5 z-40 animate-in fade-in zoom-in-95 duration-150">
+                          <div className="origin-top-left absolute left-0 mt-1.5 w-48 rounded-xl bg-white text-[#12335f] shadow-[0_12px_30px_rgba(18,51,95,0.15)] border border-[#dcebf9] py-1.5 z-40 animate-in fade-in zoom-in-95 duration-150">
                             <button
                               type="button"
                               onClick={() => {
                                 setIsHeaderMenuOpen(false);
                                 setIsBulkDisableModalOpen(true);
                               }}
-                              className="w-full text-left px-4 py-2 text-xs font-semibold text-rose-400 hover:bg-slate-800 hover:text-rose-300 transition-colors flex items-center gap-2"
+                              className="w-full text-left px-4 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors flex items-center gap-2 cursor-pointer"
                             >
-                              <Power className="w-3.5 h-3.5 text-rose-500" />
+                              <Power className="w-3.5 h-3.5 text-rose-600" />
                               Remove Access
                             </button>
                           </div>
