@@ -88,7 +88,7 @@ export const SettingsPage: React.FC = () => {
               <p className="text-xs text-slate-400">Database Engine</p>
               <p className="font-semibold text-slate-800 text-xs mt-0.5 flex items-center gap-1.5">
                 <Database className="w-3.5 h-3.5 text-slate-400" />
-                PostgreSQL via Prisma ORM
+                MySQL with Sequelize Database
               </p>
             </div>
           </div>
