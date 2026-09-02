@@ -79,7 +79,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {!isCollapsed && (
               <div className="truncate">
                 <span className="text-sm font-extrabold text-white tracking-wide block">
-                  Cortex Admin
+                  Shiksha Admin
                 </span>
                 <span className="block text-[11px] text-white/70 font-medium">
                   Learning Console

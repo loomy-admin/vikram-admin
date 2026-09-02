@@ -74,7 +74,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0f53b4] via-[#2e79cc] to-[#3791f4] text-white p-6 sm:p-7 shadow-lg shadow-blue-900/10 flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="relative z-10">
               <span className="text-xs font-bold uppercase tracking-wider text-blue-200">
-                Cortex Admin Console
+                Shiksha Admin Console
               </span>
               <h2 className="text-xl sm:text-2xl font-bold mt-1 text-white">
                 Real-time Platform Operations
