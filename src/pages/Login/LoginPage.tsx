@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GraduationCap, Lock, Mail, AlertCircle, ArrowRight } from 'lucide-react';
+import { GraduationCap, Lock, Mail, AlertCircle, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { getErrorMessage } from '../../api/axios';
 
@@ -9,8 +9,9 @@ interface LoginPageProps {
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
   const { login } = useAuth();
-  const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('admin123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -72,7 +73,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@example.com"
+                placeholder="admin@platform.com"
                 className="w-full pl-9 pr-3 py-2.5 bg-slate-900/60 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
@@ -87,13 +88,21 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
                 <Lock className="w-4 h-4" />
               </div>
               <input
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-9 pr-3 py-2.5 bg-slate-900/60 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full pl-9 pr-10 py-2.5 bg-slate-900/60 border border-slate-700 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-200 transition-colors"
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
@@ -114,14 +123,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSuccess }) => {
             </button>
           </div>
         </form>
-
-        {/* Demo Credentials Helper */}
-        <div className="p-3 bg-slate-900/40 rounded-xl border border-slate-700/60 text-center space-y-1">
-          <p className="text-[11px] font-medium text-slate-400">Default Seed Credentials:</p>
-          <p className="text-xs text-slate-300 font-mono">
-            <span className="text-blue-400">admin@example.com</span> / <span className="text-blue-400">admin123</span>
-          </p>
-        </div>
       </div>
     </div>
   );
