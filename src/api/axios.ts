@@ -1,7 +1,12 @@
 /// <reference types="vite/client" />
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-export const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:5000/api';
+// Configured via environment (Automatically selects Production Render API when deployed on Vercel)
+export const API_BASE_URL =
+  (import.meta as any).env?.VITE_API_BASE_URL ||
+  ((import.meta as any).env?.PROD
+    ? 'https://student-learning-app-backend-87ht.onrender.com/api'
+    : 'http://localhost:5000/api');
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
