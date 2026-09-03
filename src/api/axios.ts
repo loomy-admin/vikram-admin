@@ -82,3 +82,15 @@ export function getErrorMessage(error: unknown, fallback: string = 'An unexpecte
   }
   return fallback;
 }
+
+/**
+ * Health check helper to verify backend connectivity
+ */
+export async function checkApiHealth(): Promise<boolean> {
+  try {
+    const res = await apiClient.get('/health', { timeout: 10000 });
+    return res.status === 200;
+  } catch {
+    return false;
+  }
+}
