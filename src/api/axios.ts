@@ -13,7 +13,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 20000,
+  timeout: 60000,
 });
 
 // Request Interceptor: Attach JWT Token
@@ -57,6 +57,9 @@ export function getErrorMessage(error: unknown, fallback: string = 'An unexpecte
   if (axios.isAxiosError(error)) {
     if (error.response?.data?.message) {
       return error.response.data.message;
+    }
+    if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+      return 'The backend server took too long to respond. If hosted on Render free tier, it may be waking up from hibernation (cold starts can take 50-90s). Please try again in a moment.';
     }
     if (error.message === 'Network Error') {
       return 'Unable to reach the server. Please check your internet connection or backend status.';
