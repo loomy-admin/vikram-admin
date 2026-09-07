@@ -117,7 +117,7 @@ export const SchoolsPage: React.FC<SchoolsPageProps> = ({ onNavigate }) => {
             setSchoolToEdit(null);
             setIsFormOpen(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-xs transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-xl shadow-xs transition-colors"
         >
           <Plus className="w-4 h-4" />
           Add New School
@@ -138,7 +138,7 @@ export const SchoolsPage: React.FC<SchoolsPageProps> = ({ onNavigate }) => {
               setPage(1);
             }}
             placeholder="Search school name or code..."
-            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
           />
         </div>
 
@@ -150,7 +150,7 @@ export const SchoolsPage: React.FC<SchoolsPageProps> = ({ onNavigate }) => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
           >
             <option value="">All Statuses</option>
             <option value="ACTIVE">ACTIVE</option>
@@ -201,13 +201,13 @@ export const SchoolsPage: React.FC<SchoolsPageProps> = ({ onNavigate }) => {
                     <tr key={school.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0 border border-blue-100">
+                          <div className="w-10 h-10 rounded-lg bg-red-50 text-red-600 flex items-center justify-center font-bold text-xs shrink-0 border border-red-100">
                             <Building2 className="w-5 h-5" />
                           </div>
                           <div>
                             <button
                               onClick={() => onNavigate(`/schools/${school.id}`)}
-                              className="font-bold text-slate-900 hover:text-blue-600 transition-colors text-left"
+                              className="font-bold text-slate-900 hover:text-red-600 transition-colors text-left"
                             >
                               {school.name}
                             </button>
@@ -267,7 +267,7 @@ export const SchoolsPage: React.FC<SchoolsPageProps> = ({ onNavigate }) => {
                           <button
                             onClick={() => onNavigate(`/schools/${school.id}`)}
                             title="View School Details"
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-slate-100 transition-colors"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-slate-100 transition-colors"
                           >
                             <Eye className="w-4 h-4" />
                           </button>

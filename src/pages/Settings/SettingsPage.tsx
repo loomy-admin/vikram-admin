@@ -19,7 +19,7 @@ export const SettingsPage: React.FC = () => {
         {/* Administrator Profile Card */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
           <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-            <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+            <div className="p-2 rounded-lg bg-red-50 text-red-600">
               <Shield className="w-5 h-5" />
             </div>
             <div>
@@ -39,7 +39,7 @@ export const SettingsPage: React.FC = () => {
             </div>
             <div>
               <p className="text-xs text-slate-400">System Role</p>
-              <span className="inline-flex px-2.5 py-0.5 mt-0.5 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+              <span className="inline-flex px-2.5 py-0.5 mt-0.5 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-200">
                 SUPER ADMIN
               </span>
             </div>

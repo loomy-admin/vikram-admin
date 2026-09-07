@@ -168,7 +168,7 @@ export const SchoolDetailsPage: React.FC<SchoolDetailsPageProps> = ({
           </button>
           <button
             onClick={() => setIsGenerateOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-xs"
+            className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-xs"
           >
             <Plus className="w-3.5 h-3.5" />
             Generate Code
@@ -220,8 +220,8 @@ export const SchoolDetailsPage: React.FC<SchoolDetailsPageProps> = ({
         <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-xs flex flex-col justify-between space-y-4">
           <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">Access Statistics</h3>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-blue-50 rounded-lg border border-blue-100">
-              <p className="text-xs text-blue-700 font-medium">Students</p>
+            <div className="p-3 bg-red-50 rounded-lg border border-red-100">
+              <p className="text-xs text-red-700 font-medium">Students</p>
               <p className="text-2xl font-bold text-blue-950 mt-1">
                 {school._count?.students ?? school.studentsCount ?? 0}
               </p>
@@ -252,7 +252,7 @@ export const SchoolDetailsPage: React.FC<SchoolDetailsPageProps> = ({
               onClick={() => setActiveTab('students')}
               className={`pb-3 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
                 activeTab === 'students'
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-red-600 text-red-600'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -263,7 +263,7 @@ export const SchoolDetailsPage: React.FC<SchoolDetailsPageProps> = ({
               onClick={() => setActiveTab('codes')}
               className={`pb-3 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
                 activeTab === 'codes'
-                  ? 'border-blue-600 text-blue-600'
+                  ? 'border-red-600 text-red-600'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -313,7 +313,7 @@ export const SchoolDetailsPage: React.FC<SchoolDetailsPageProps> = ({
                         <td className="px-6 py-3.5 text-right">
                           <button
                             onClick={() => onNavigate(`/students/${st.id}`)}
-                            className="text-xs font-semibold text-blue-600 hover:text-blue-800"
+                            className="text-xs font-semibold text-red-600 hover:text-red-800"
                           >
                             View Student →
                           </button>

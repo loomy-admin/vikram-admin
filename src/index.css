@@ -3,8 +3,8 @@
 @layer base {
   body {
     font-family: "Outfit", "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
-    background: #f7fbff;
-    color: #12335f;
+    background: #f8fafc;
+    color: #0f172a;
     -webkit-font-smoothing: antialiased;
   }
 }

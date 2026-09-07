@@ -188,8 +188,8 @@ export const AccessCodesPage: React.FC = () => {
         isOpen={isBulkDisableModalOpen}
         title="Confirm disable access codes"
         message={
-          <p className="text-sm text-[#60728a] leading-relaxed">
-            Once disabled, the <strong className="font-bold text-[#12335f]">{selectedIds.length} selected access code(s)</strong> will no longer be redeemable for student activation, but their record history will be retained in the database.
+          <p className="text-sm text-slate-500 leading-relaxed">
+            Once disabled, the <strong className="font-bold text-slate-900">{selectedIds.length} selected access code(s)</strong> will no longer be redeemable for student activation, but their record history will be retained in the database.
           </p>
         }
         confirmText={`Disable ${selectedIds.length} selected code(s)`}
@@ -214,12 +214,12 @@ export const AccessCodesPage: React.FC = () => {
             onClick={() => setIsBulkOpen(true)}
             className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 shadow-xs transition-colors"
           >
-            <Layers className="w-4 h-4 text-blue-600" />
+            <Layers className="w-4 h-4 text-red-600" />
             Bulk Generator
           </button>
           <button
             onClick={() => setIsSingleOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl shadow-xs transition-colors"
           >
             <Plus className="w-4 h-4" />
             Single Code
@@ -242,7 +242,7 @@ export const AccessCodesPage: React.FC = () => {
               setPage(1);
             }}
             placeholder="Search 10-digit code..."
-            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-mono"
+            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 font-mono"
           />
         </div>
 
@@ -254,7 +254,7 @@ export const AccessCodesPage: React.FC = () => {
               setSelectedSchoolId(e.target.value);
               setPage(1);
             }}
-            className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
           >
             <option value="">All Schools</option>
             {schools.map((s) => (
@@ -274,7 +274,7 @@ export const AccessCodesPage: React.FC = () => {
               setStatusFilter(e.target.value);
               setPage(1);
             }}
-            className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
           >
             <option value="">All Statuses</option>
             <option value="UNUSED">UNUSED</option>
@@ -313,7 +313,7 @@ export const AccessCodesPage: React.FC = () => {
                         checked={allSelectableOnPageSelected}
                         onChange={handleSelectAllOnPage}
                         title="Select all unused codes on page"
-                        className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer"
+                        className="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500 cursor-pointer"
                       />
                     ) : (
                       <input
@@ -321,7 +321,7 @@ export const AccessCodesPage: React.FC = () => {
                         checked={selectedIds.length > 0}
                         onChange={() => setSelectedIds([])}
                         title="Clear selections"
-                        className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 cursor-pointer"
+                        className="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500 cursor-pointer"
                       />
                     )}
                   </th>
@@ -341,7 +341,7 @@ export const AccessCodesPage: React.FC = () => {
 
                         {/* Dropdown Options */}
                         {isHeaderMenuOpen && (
-                          <div className="origin-top-left absolute left-0 mt-1.5 w-48 rounded-xl bg-white text-[#12335f] shadow-[0_12px_30px_rgba(18,51,95,0.15)] border border-[#dcebf9] py-1.5 z-40 animate-in fade-in zoom-in-95 duration-150">
+                          <div className="origin-top-left absolute left-0 mt-1.5 w-48 rounded-xl bg-white text-slate-800 shadow-lg border border-slate-200 py-1.5 z-40 animate-in fade-in zoom-in-95 duration-150">
                             <button
                               type="button"
                               onClick={() => {
@@ -382,7 +382,7 @@ export const AccessCodesPage: React.FC = () => {
                     <tr
                       key={item.id}
                       className={`hover:bg-slate-50/70 transition-colors ${
-                        isChecked ? 'bg-blue-50/40' : ''
+                        isChecked ? 'bg-red-50/40' : ''
                       }`}
                     >
                       {/* Selection Checkbox */}
@@ -392,7 +392,7 @@ export const AccessCodesPage: React.FC = () => {
                           disabled={!isSelectable}
                           checked={isChecked}
                           onChange={() => handleToggleSelectRow(item.id)}
-                          className="w-4 h-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500 disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed"
+                          className="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500 disabled:opacity-30 cursor-pointer disabled:cursor-not-allowed"
                         />
                       </td>
 
@@ -454,7 +454,7 @@ export const AccessCodesPage: React.FC = () => {
                               <button
                                 onClick={() => setCodeToReassign(item)}
                                 title="Reassign School"
-                                className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+                                className="p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors"
                               >
                                 <ArrowRightLeft className="w-4 h-4" />
                               </button>

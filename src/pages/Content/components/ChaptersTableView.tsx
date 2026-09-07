@@ -10,6 +10,7 @@ import {
   ArrowUp,
   ArrowDown,
   FileText,
+  Video,
 } from 'lucide-react';
 import { ChapterItem, SubjectItem } from '../../../types';
 import { StatusChip } from '../../../components/common/StatusChip';
@@ -18,10 +19,11 @@ interface ChaptersTableViewProps {
   subject: SubjectItem;
   chapters: ChapterItem[];
   isLoading: boolean;
-  onSelectChapter: (chapter: ChapterItem) => void;
+  onSelectChapter: (chapter: ChapterItem, tab?: 'TOPICS' | 'CONTENT') => void;
   onAddChapter: () => void;
   onEditChapter: (chapter: ChapterItem) => void;
   onDeleteChapter: (chapter: ChapterItem) => void;
+  onAddContentToChapter: (chapter: ChapterItem) => void;
   onReorder: (index: number, direction: 'up' | 'down') => void;
   onDragDrop: (dragIndex: number, dropIndex: number) => void;
 }
@@ -34,6 +36,7 @@ export const ChaptersTableView: React.FC<ChaptersTableViewProps> = ({
   onAddChapter,
   onEditChapter,
   onDeleteChapter,
+  onAddContentToChapter,
   onReorder,
   onDragDrop,
 }) => {
@@ -73,7 +76,7 @@ export const ChaptersTableView: React.FC<ChaptersTableViewProps> = ({
           </div>
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              Chapters for <span className="text-blue-600 font-extrabold">{subject.name}</span>
+              Chapters for <span className="text-red-600 font-extrabold">{subject.name}</span>
               <span className="px-2 py-0.5 text-xs font-bold bg-emerald-100 text-emerald-700 rounded-full">
                 {filteredChapters.length}
               </span>
@@ -120,7 +123,7 @@ export const ChaptersTableView: React.FC<ChaptersTableViewProps> = ({
           </p>
           <button
             onClick={onAddChapter}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 rounded-lg hover:bg-emerald-100"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-emerald-600 bg-emerald-50 rounded-lg hover:bg-emerald-100"
           >
             <Plus className="w-3.5 h-3.5" /> Add New Chapter
           </button>
@@ -134,6 +137,7 @@ export const ChaptersTableView: React.FC<ChaptersTableViewProps> = ({
                 <th className="py-3 px-4">Chapter Name</th>
                 <th className="py-3 px-4">Description</th>
                 <th className="py-3 px-4 text-center">Topics</th>
+                <th className="py-3 px-4 text-center">Direct Content</th>
                 <th className="py-3 px-4 text-center">Status</th>
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
@@ -178,14 +182,25 @@ export const ChaptersTableView: React.FC<ChaptersTableViewProps> = ({
                     </div>
                   </td>
 
-                  {/* Chapter Name */}
+                  {/* Chapter Name & Image */}
                   <td className="py-3 px-4 font-bold text-slate-900">
                     <button
                       type="button"
                       onClick={() => onSelectChapter(ch)}
-                      className="hover:text-emerald-600 hover:underline inline-flex items-center gap-1.5 text-left"
+                      className="hover:text-emerald-600 inline-flex items-center gap-2.5 text-left"
                     >
-                      <span>{ch.name}</span>
+                      {ch.imageUrl ? (
+                        <img
+                          src={ch.imageUrl}
+                          alt={ch.name}
+                          className="w-8 h-8 rounded-lg object-contain bg-slate-50 border border-slate-200 p-0.5 shrink-0"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+                          <Layers className="w-4 h-4" />
+                        </div>
+                      )}
+                      <span className="hover:underline">{ch.name}</span>
                     </button>
                   </td>
 
@@ -196,10 +211,32 @@ export const ChaptersTableView: React.FC<ChaptersTableViewProps> = ({
 
                   {/* Topics Count */}
                   <td className="py-3 px-4 text-center">
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                      <FileText className="w-3 h-3 text-slate-500" />
+                    <button
+                      type="button"
+                      onClick={() => onSelectChapter(ch, 'TOPICS')}
+                      className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200 hover:bg-red-100 transition-colors"
+                      title="View Topics"
+                    >
+                      <FileText className="w-3 h-3 text-red-600" />
                       {ch._count?.topics ?? 0} Topics
-                    </span>
+                    </button>
+                  </td>
+
+                  {/* Direct Content Count */}
+                  <td className="py-3 px-4 text-center">
+                    <button
+                      type="button"
+                      onClick={() => onSelectChapter(ch, 'CONTENT')}
+                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold border transition-colors ${
+                        (ch._count?.contents ?? 0) > 0
+                          ? 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100'
+                          : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                      }`}
+                      title="Manage Direct Chapter Materials"
+                    >
+                      <Video className="w-3 h-3 text-amber-600" />
+                      {ch._count?.contents ?? 0} Materials
+                    </button>
                   </td>
 
                   {/* Status */}
@@ -209,13 +246,24 @@ export const ChaptersTableView: React.FC<ChaptersTableViewProps> = ({
 
                   {/* Actions */}
                   <td className="py-3 px-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => onAddContentToChapter(ch)}
+                        className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors shadow-2xs"
+                        title="Add Direct Content to Chapter"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add Content</span>
+                      </button>
+
                       <button
                         type="button"
                         onClick={() => onSelectChapter(ch)}
                         className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg transition-colors"
+                        title="Manage Chapter"
                       >
-                        <span>View Topics</span>
+                        <span>Manage</span>
                         <ChevronRight className="w-3.5 h-3.5" />
                       </button>
 

@@ -169,7 +169,7 @@ export const StudentDetailsPage: React.FC<StudentDetailsPageProps> = ({
 
             <div className="flex items-center justify-between pt-2 border-t border-slate-100">
               <span className="text-xs text-slate-500 flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-blue-500" /> Last Activity
+                <Clock className="w-3.5 h-3.5 text-red-500" /> Last Activity
               </span>
               <span className="text-xs font-semibold text-slate-900">
                 {(student.lastLoginAt || student.lastLogin)
@@ -197,7 +197,7 @@ export const StudentDetailsPage: React.FC<StudentDetailsPageProps> = ({
               {/* School Box */}
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
                 <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase">
-                  <Building2 className="w-4 h-4 text-blue-600" />
+                  <Building2 className="w-4 h-4 text-red-600" />
                   Assigned School
                 </div>
                 {student.school ? (
@@ -208,7 +208,7 @@ export const StudentDetailsPage: React.FC<StudentDetailsPageProps> = ({
                     </p>
                     <button
                       onClick={() => onNavigate(`/schools/${student.schoolId}`)}
-                      className="text-xs text-blue-600 hover:text-blue-800 font-semibold mt-2 inline-block"
+                      className="text-xs text-red-600 hover:text-red-800 font-semibold mt-2 inline-block"
                     >
                       View School Profile →
                     </button>

@@ -13,12 +13,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobile, title, breadcrumbs
   const { user, logout } = useAuth();
 
   return (
-    <header className="h-16 bg-[#f7fbff] border-b border-[#d7e7f8] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20">
+    <header className="h-16 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20">
       {/* Left section: mobile hamburger + title */}
       <div className="flex items-center gap-3">
         <button
           onClick={onOpenMobile}
-          className="md:hidden p-2 rounded-lg text-[#12335f] hover:bg-[#e8f2ff] transition-colors"
+          className="md:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors"
           title="Open menu"
         >
           <Menu className="w-5 h-5" />
@@ -26,19 +26,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobile, title, breadcrumbs
 
         <div>
           {breadcrumbs && breadcrumbs.length > 0 && (
-            <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#60728a] mb-0.5 font-medium">
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 mb-0.5 font-medium">
               <span>Console</span>
               {breadcrumbs.map((crumb, idx) => (
                 <React.Fragment key={idx}>
                   <span>/</span>
-                  <span className={idx === breadcrumbs.length - 1 ? 'font-bold text-[#12335f]' : ''}>
+                  <span className={idx === breadcrumbs.length - 1 ? 'font-bold text-slate-900' : ''}>
                     {crumb}
                   </span>
                 </React.Fragment>
               ))}
             </div>
           )}
-          <h1 className="text-lg font-black text-[#12335f] leading-none tracking-tight">{title}</h1>
+          <h1 className="text-lg font-black text-slate-900 leading-none tracking-tight">{title}</h1>
         </div>
       </div>
 
@@ -58,19 +58,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobile, title, breadcrumbs
           <div className="hidden sm:block text-right">
             <p className="text-xs font-semibold text-slate-900">{user?.name || 'Administrator'}</p>
             <div className="flex items-center justify-end gap-1 text-[11px] text-slate-500">
-              <Shield className="w-3 h-3 text-blue-600" />
+              <Shield className="w-3 h-3 text-red-600" />
               <span>Full Access</span>
             </div>
           </div>
 
-          <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+          <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
             {user?.name ? user.name.slice(0, 2).toUpperCase() : 'AD'}
           </div>
 
           <button
             onClick={logout}
             title="Sign out"
-            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100 transition-colors cursor-pointer"
           >
             <LogOut className="w-4 h-4" />
           </button>

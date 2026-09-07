@@ -29,38 +29,38 @@ export const TopCenterConfirmModal: React.FC<TopCenterConfirmModalProps> = ({
   const btnVariants = {
     danger: 'bg-rose-600 hover:bg-rose-700 text-white shadow-xs',
     warning: 'bg-amber-600 hover:bg-amber-700 text-white shadow-xs',
-    primary: 'bg-[#0f53b4] hover:bg-[#0d479a] text-white shadow-xs',
+    primary: 'bg-red-600 hover:bg-red-700 text-white shadow-xs',
   };
 
   const iconBgVariants = {
     danger: 'bg-rose-50 text-rose-600 border-rose-100',
     warning: 'bg-amber-50 text-amber-600 border-amber-100',
-    primary: 'bg-[#e8f2ff] text-[#0f53b4] border-[#c8def5]',
+    primary: 'bg-red-50 text-red-600 border-red-100',
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#12335f]/40 backdrop-blur-xs flex items-start justify-center pt-14 sm:pt-16 px-4 animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl border border-[#dcebf9] shadow-[0_22px_60px_rgba(18,51,95,0.18)] max-w-lg w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-start justify-center pt-14 sm:pt-16 px-4 animate-in fade-in duration-200">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-[0_22px_60px_rgba(0,0,0,0.12)] max-w-lg w-full p-6 space-y-5 animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
         <div className="flex items-center justify-between pb-3.5 border-b border-slate-100">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-xl border ${iconBgVariants[confirmVariant]}`}>
               <AlertTriangle className="w-5 h-5 shrink-0" />
             </div>
-            <h3 className="text-base font-bold text-[#12335f]">{title}</h3>
+            <h3 className="text-base font-bold text-slate-900">{title}</h3>
           </div>
           <button
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="p-1 rounded-lg text-slate-400 hover:text-[#12335f] hover:bg-slate-100 transition-colors disabled:opacity-50"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors disabled:opacity-50"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Message Body */}
-        <div className="text-sm text-[#60728a] leading-relaxed">
+        <div className="text-sm text-slate-600 leading-relaxed">
           {typeof message === 'string' ? <p>{message}</p> : message}
         </div>
 
@@ -70,7 +70,7 @@ export const TopCenterConfirmModal: React.FC<TopCenterConfirmModalProps> = ({
             type="button"
             onClick={onClose}
             disabled={isLoading}
-            className="w-full sm:w-auto px-4 py-2.5 text-xs font-bold text-[#0f53b4] bg-white border border-[#c8def5] hover:bg-[#f0f7ff] rounded-xl transition-all disabled:opacity-50 cursor-pointer"
+            className="w-full sm:w-auto px-4 py-2.5 text-xs font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl transition-all disabled:opacity-50 cursor-pointer"
           >
             {cancelText}
           </button>

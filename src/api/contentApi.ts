@@ -12,6 +12,7 @@ import {
 
 export interface ListContentParams {
   topicId?: number;
+  chapterId?: number;
   type?: ContentType;
   status?: ContentStatus;
   page?: number;
@@ -65,6 +66,11 @@ export const contentApi = {
     return res.items;
   },
 
+  async getContentByChapter(chapterId: number): Promise<ContentItem[]> {
+    const res = await this.getContent({ chapterId, limit: 100 });
+    return res.items;
+  },
+
   async getContentById(id: number): Promise<ContentItem> {
     const res = await apiClient.get<ApiResponse<ContentItem>>(`/admin/content/${id}`);
     return res.data.data!;
@@ -94,6 +100,25 @@ export const contentApi = {
     formData.append('file', file);
 
     const res = await apiClient.post<ApiResponse<FileUploadResult>>('/admin/content/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      onUploadProgress: (progressEvent) => {
+        if (progressEvent.total && onProgress) {
+          const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          onProgress(percent);
+        }
+      },
+    });
+
+    return res.data.data!;
+  },
+
+  async uploadImage(file: File, onProgress?: (percent: number) => void): Promise<{ url: string; publicId?: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await apiClient.post<ApiResponse<{ url: string; publicId?: string }>>('/admin/upload/image', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

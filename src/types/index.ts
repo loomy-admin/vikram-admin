@@ -1,7 +1,7 @@
 export type SchoolStatus = 'ACTIVE' | 'INACTIVE';
 export type StudentStatus = 'PENDING' | 'ACTIVE' | 'INACTIVE';
 export type AccessCodeStatus = 'UNUSED' | 'USED' | 'INACTIVE';
-export type ContentType = 'VIDEO' | 'PDF' | 'IMAGE' | 'WEB_LINK';
+export type ContentType = 'VIDEO' | 'PDF' | 'WEB_LINK';
 export type ContentStatus = 'VISIBLE' | 'HIDDEN';
 export type ClassStatus = 'ACTIVE' | 'INACTIVE';
 export type SubjectStatus = 'ACTIVE' | 'INACTIVE';
@@ -135,6 +135,7 @@ export interface SubjectItem {
   classId: number;
   name: string;
   description?: string | null;
+  imageUrl?: string | null;
   order: number;
   status: SubjectStatus;
   createdAt?: string;
@@ -150,6 +151,7 @@ export interface ChapterItem {
   subjectId: number;
   name: string;
   description?: string | null;
+  imageUrl?: string | null;
   order: number;
   status: ChapterStatus;
   createdAt?: string;
@@ -157,6 +159,7 @@ export interface ChapterItem {
   topics?: TopicItem[];
   _count?: {
     topics: number;
+    contents?: number;
   };
 }
 
@@ -165,6 +168,7 @@ export interface TopicItem {
   chapterId: number;
   name: string;
   description?: string | null;
+  imageUrl?: string | null;
   order: number;
   status: TopicStatus;
   createdAt?: string;
@@ -181,6 +185,7 @@ export interface ContentItem {
   title: string;
   type: ContentType;
   url: string;
+  thumbnailUrl?: string | null;
   description?: string | null;
   order: number;
   status: ContentStatus;
@@ -229,6 +234,7 @@ export interface CreateSubjectPayload {
   classId: number;
   name: string;
   description?: string;
+  imageUrl?: string | null;
   order?: number;
   status?: SubjectStatus;
 }
@@ -237,6 +243,7 @@ export interface UpdateSubjectPayload {
   classId?: number;
   name?: string;
   description?: string;
+  imageUrl?: string | null;
   order?: number;
   status?: SubjectStatus;
 }
@@ -245,6 +252,7 @@ export interface CreateChapterPayload {
   subjectId: number;
   name: string;
   description?: string;
+  imageUrl?: string | null;
   order?: number;
   status?: ChapterStatus;
 }
@@ -252,6 +260,7 @@ export interface CreateChapterPayload {
 export interface UpdateChapterPayload {
   name?: string;
   description?: string;
+  imageUrl?: string | null;
   order?: number;
   status?: ChapterStatus;
 }
@@ -260,6 +269,7 @@ export interface CreateTopicPayload {
   chapterId: number;
   name: string;
   description?: string;
+  imageUrl?: string | null;
   order?: number;
   status?: TopicStatus;
 }
@@ -267,6 +277,7 @@ export interface CreateTopicPayload {
 export interface UpdateTopicPayload {
   name?: string;
   description?: string;
+  imageUrl?: string | null;
   order?: number;
   status?: TopicStatus;
 }
@@ -277,6 +288,7 @@ export interface CreateContentPayload {
   title: string;
   type: ContentType;
   url: string;
+  thumbnailUrl?: string | null;
   description?: string;
   order?: number;
   status?: ContentStatus;
@@ -289,6 +301,7 @@ export interface UpdateContentPayload {
   title?: string;
   type?: ContentType;
   url?: string;
+  thumbnailUrl?: string | null;
   description?: string;
   order?: number;
   status?: ContentStatus;

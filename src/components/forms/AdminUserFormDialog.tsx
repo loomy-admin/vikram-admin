@@ -90,7 +90,7 @@ export const AdminUserFormDialog: React.FC<AdminUserFormDialogProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Sarah Jenkins"
-              className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
+              className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
                 errors.name ? 'border-rose-400' : 'border-slate-300'
               }`}
             />
@@ -106,7 +106,7 @@ export const AdminUserFormDialog: React.FC<AdminUserFormDialogProps> = ({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g. admin@schoolplatform.com"
-              className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
+              className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
                 errors.email ? 'border-rose-400' : 'border-slate-300'
               }`}
             />
@@ -122,7 +122,7 @@ export const AdminUserFormDialog: React.FC<AdminUserFormDialogProps> = ({
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={userToEdit ? '••••••••' : 'Minimum 6 characters'}
-              className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
+              className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
                 errors.password ? 'border-rose-400' : 'border-slate-300'
               }`}
             />
@@ -134,7 +134,7 @@ export const AdminUserFormDialog: React.FC<AdminUserFormDialogProps> = ({
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value as AdminStatus)}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             >
               <option value="ACTIVE">ACTIVE</option>
               <option value="INACTIVE">INACTIVE</option>
@@ -153,7 +153,7 @@ export const AdminUserFormDialog: React.FC<AdminUserFormDialogProps> = ({
             <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-xs flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-xs flex items-center gap-2"
             >
               {isLoading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
               {userToEdit ? 'Save Changes' : 'Create Admin'}

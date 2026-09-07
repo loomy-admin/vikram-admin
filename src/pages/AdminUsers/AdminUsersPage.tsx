@@ -131,7 +131,7 @@ export const AdminUsersPage: React.FC = () => {
             setUserToEdit(null);
             setIsFormOpen(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-xl shadow-xs transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold rounded-xl shadow-xs transition-colors"
         >
           <Plus className="w-4 h-4" />
           Add Administrator
@@ -152,7 +152,7 @@ export const AdminUsersPage: React.FC = () => {
               setPage(1);
             }}
             placeholder="Search admin name or email..."
-            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+            className="w-full pl-9 pr-4 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
           />
         </div>
       </div>
@@ -196,14 +196,14 @@ export const AdminUsersPage: React.FC = () => {
                     <tr key={u.id} className="hover:bg-slate-50/70 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs uppercase shrink-0 border border-blue-200">
+                          <div className="w-9 h-9 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-xs uppercase shrink-0 border border-red-200">
                             {u.name ? u.name.slice(0, 2) : 'AD'}
                           </div>
                           <div>
                             <p className="font-bold text-slate-900 flex items-center gap-2">
                               {u.name}
                               {isSelf && (
-                                <span className="px-2 py-0.5 text-[10px] font-bold bg-blue-100 text-blue-700 rounded-full">
+                                <span className="px-2 py-0.5 text-[10px] font-bold bg-red-100 text-red-700 rounded-full">
                                   YOU
                                 </span>
                               )}

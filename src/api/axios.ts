@@ -1,12 +1,32 @@
 /// <reference types="vite/client" />
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 
-// Configured via environment (Automatically selects Production Render API when deployed on Vercel)
-export const API_BASE_URL =
-  (import.meta as any).env?.VITE_API_BASE_URL ||
-  ((import.meta as any).env?.PROD
-    ? 'https://student-learning-app-backend-87ht.onrender.com/api'
-    : 'http://localhost:5000/api');
+// ─── API Base URL ─────────────────────────────────────────────────────────────
+// Priority:
+//   1. VITE_API_BASE_URL environment variable (set in .env or deployment platform)
+//   2. Development fallback to localhost (only in Vite dev mode)
+//
+// In production: VITE_API_BASE_URL MUST be set in your deployment platform
+// (Vercel: Project Settings > Environment Variables > VITE_API_BASE_URL)
+//
+// Example .env.local:
+//   VITE_API_BASE_URL=http://localhost:5000/api
+// Example Vercel env var:
+//   VITE_API_BASE_URL=https://api.yourschool.com/api
+
+const viteEnv = (import.meta as any).env;
+const isProd = viteEnv?.PROD === true;
+
+export const API_BASE_URL = viteEnv?.VITE_API_BASE_URL || (isProd ? '' : 'http://localhost:5000/api');
+
+// Warn in production if VITE_API_BASE_URL was not set
+if (isProd && !viteEnv?.VITE_API_BASE_URL) {
+  console.error(
+    '[Admin] CRITICAL: VITE_API_BASE_URL is not set. ' +
+    'Set it in your deployment platform environment variables. ' +
+    'API requests will fail.'
+  );
+}
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,

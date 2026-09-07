@@ -105,7 +105,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. St. Xavier High School"
-                className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
+                className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
                   errors.name ? 'border-rose-400' : 'border-slate-300'
                 }`}
               />
@@ -122,7 +122,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
                 onChange={(e) => setSchoolCode(e.target.value.toUpperCase())}
                 placeholder="e.g. STX-2026"
                 disabled={!!schoolToEdit}
-                className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 uppercase ${
+                className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 uppercase ${
                   errors.schoolCode ? 'border-rose-400' : 'border-slate-300'
                 } ${schoolToEdit ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}`}
               />
@@ -134,7 +134,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value as SchoolStatus)}
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
               >
                 <option value="ACTIVE">ACTIVE</option>
                 <option value="INACTIVE">INACTIVE</option>
@@ -148,7 +148,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="e.g. 124 Education Boulevard, Block B"
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
               />
             </div>
 
@@ -159,7 +159,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
                 value={contactPerson}
                 onChange={(e) => setContactPerson(e.target.value)}
                 placeholder="e.g. Dr. Robert Vance"
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
               />
             </div>
 
@@ -170,7 +170,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="e.g. +91 9876543210"
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
               />
             </div>
 
@@ -181,7 +181,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="e.g. contact@stxaviers.edu"
-                className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 ${
+                className={`w-full px-3 py-2 text-sm bg-white border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 ${
                   errors.email ? 'border-rose-400' : 'border-slate-300'
                 }`}
               />
@@ -201,7 +201,7 @@ export const SchoolFormDialog: React.FC<SchoolFormDialogProps> = ({
             <button
               type="submit"
               disabled={isLoading}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-xs disabled:opacity-50 flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-xs disabled:opacity-50 flex items-center gap-2"
             >
               {isLoading && (
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

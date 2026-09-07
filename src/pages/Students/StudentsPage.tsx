@@ -164,7 +164,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
           {hasActiveFilters && (
             <button
               onClick={handleResetFilters}
-              className="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 font-semibold"
+              className="inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-800 font-semibold"
             >
               <FilterX className="w-3.5 h-3.5" /> Clear Filters
             </button>
@@ -183,7 +183,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
                 setPage(1);
               }}
               placeholder="Filter by Student Name..."
-              className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             />
           </div>
 
@@ -195,7 +195,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
                 setSelectedSchoolId(e.target.value);
                 setPage(1);
               }}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             >
               <option value="">Filter by School (All)</option>
               {schools.map((s) => (
@@ -217,7 +217,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
                 setPage(1);
               }}
               placeholder="Filter by Code..."
-              className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             />
           </div>
 
@@ -229,7 +229,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
                 setSelectedClassId(e.target.value);
                 setPage(1);
               }}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             >
               <option value="">Filter by Class (All)</option>
               {classes.map((c) => (
@@ -248,7 +248,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
                 setStatusFilter(e.target.value);
                 setPage(1);
               }}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 text-sm bg-white border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             >
               <option value="">Filter by Status (All)</option>
               <option value="ACTIVE">ACTIVE</option>
@@ -297,13 +297,13 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
                       {/* 1. Student Name & ID */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs uppercase shrink-0 border border-blue-200">
+                          <div className="w-9 h-9 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold text-xs uppercase shrink-0 border border-red-200">
                             {student.name ? student.name.slice(0, 2) : 'ST'}
                           </div>
                           <div>
                             <button
                               onClick={() => onNavigate(`/students/${student.id}`)}
-                              className="font-bold text-slate-900 hover:text-blue-600 transition-colors text-left"
+                              className="font-bold text-slate-900 hover:text-red-600 transition-colors text-left"
                             >
                               {student.name}
                             </button>
@@ -371,7 +371,7 @@ export const StudentsPage: React.FC<StudentsPageProps> = ({ onNavigate }) => {
                           <button
                             onClick={() => onNavigate(`/students/${student.id}`)}
                             title="View Student Profile & Activity"
-                            className="p-1.5 rounded-lg text-slate-500 hover:text-blue-600 hover:bg-slate-100 transition-colors"
+                            className="p-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-slate-100 transition-colors"
                           >
                             <Eye className="w-4 h-4" />
                           </button>

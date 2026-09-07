@@ -60,7 +60,7 @@ export const ReassignCodeDialog: React.FC<ReassignCodeDialogProps> = ({
       <div className="bg-white rounded-xl border border-slate-200 shadow-xl max-w-md w-full p-6 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+            <div className="p-2 rounded-lg bg-red-50 text-red-600">
               <ArrowRightLeft className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900">Reassign Access Code</h3>
@@ -92,7 +92,7 @@ export const ReassignCodeDialog: React.FC<ReassignCodeDialogProps> = ({
             <select
               value={selectedSchoolId}
               onChange={(e) => setSelectedSchoolId(e.target.value ? Number(e.target.value) : '')}
-              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             >
               <option value="">-- Select New School --</option>
               {schools.map((s) => (
@@ -115,7 +115,7 @@ export const ReassignCodeDialog: React.FC<ReassignCodeDialogProps> = ({
             <button
               type="submit"
               disabled={isLoading || !selectedSchoolId}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-xs disabled:opacity-50 flex items-center gap-2"
+              className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-xs disabled:opacity-50 flex items-center gap-2"
             >
               {isLoading && (
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />

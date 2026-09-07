@@ -66,13 +66,13 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
       {/* Table Toolbar Header */}
       <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-50/50">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+          <div className="p-2 rounded-lg bg-red-50 text-red-600">
             <BookOpen className="w-5 h-5" />
           </div>
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
               Subjects
-              <span className="px-2 py-0.5 text-xs font-bold bg-blue-100 text-blue-700 rounded-full">
+              <span className="px-2 py-0.5 text-xs font-bold bg-red-100 text-red-700 rounded-full">
                 {filteredSubjects.length}
               </span>
             </h3>
@@ -89,13 +89,13 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search subjects..."
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
             />
           </div>
 
           <button
             onClick={onAddSubject}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-xs shrink-0"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-xs shrink-0"
           >
             <Plus className="w-4 h-4" />
             Add Subject
@@ -118,7 +118,7 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
           </p>
           <button
             onClick={onAddSubject}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 rounded-lg hover:bg-red-100"
           >
             <Plus className="w-3.5 h-3.5" /> Add New Subject
           </button>
@@ -145,8 +145,8 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, idx)}
                   onDragEnd={() => setDraggedIdx(null)}
-                  className={`hover:bg-blue-50/40 transition-colors ${
-                    draggedIdx === idx ? 'opacity-40 bg-blue-50 border-dashed border-blue-400' : ''
+                  className={`hover:bg-red-50/40 transition-colors ${
+                    draggedIdx === idx ? 'opacity-40 bg-red-50 border-dashed border-red-400' : ''
                   }`}
                 >
                   {/* Drag Handle & Reorder */}
@@ -158,7 +158,7 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
                           type="button"
                           disabled={idx === 0}
                           onClick={() => onReorder(idx, 'up')}
-                          className="text-slate-400 hover:text-blue-600 disabled:opacity-20"
+                          className="text-slate-400 hover:text-red-600 disabled:opacity-20"
                           title="Move Up"
                         >
                           <ArrowUp className="w-3 h-3" />
@@ -167,7 +167,7 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
                           type="button"
                           disabled={idx === filteredSubjects.length - 1}
                           onClick={() => onReorder(idx, 'down')}
-                          className="text-slate-400 hover:text-blue-600 disabled:opacity-20"
+                          className="text-slate-400 hover:text-red-600 disabled:opacity-20"
                           title="Move Down"
                         >
                           <ArrowDown className="w-3 h-3" />
@@ -176,14 +176,25 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
                     </div>
                   </td>
 
-                  {/* Subject Name */}
+                  {/* Subject Name & Image */}
                   <td className="py-3 px-4 font-bold text-slate-900">
                     <button
                       type="button"
                       onClick={() => onSelectSubject(sub)}
-                      className="hover:text-blue-600 hover:underline inline-flex items-center gap-1.5 text-left"
+                      className="hover:text-red-600 inline-flex items-center gap-2.5 text-left"
                     >
-                      <span>{sub.name}</span>
+                      {sub.imageUrl ? (
+                        <img
+                          src={sub.imageUrl}
+                          alt={sub.name}
+                          className="w-8 h-8 rounded-lg object-contain bg-slate-50 border border-slate-200 p-0.5 shrink-0"
+                        />
+                      ) : (
+                        <div className="w-8 h-8 rounded-lg bg-red-50 border border-red-100 flex items-center justify-center text-red-600 shrink-0">
+                          <BookOpen className="w-4 h-4" />
+                        </div>
+                      )}
+                      <span className="hover:underline">{sub.name}</span>
                     </button>
                   </td>
 
@@ -211,7 +222,7 @@ export const SubjectsTableView: React.FC<SubjectsTableViewProps> = ({
                       <button
                         type="button"
                         onClick={() => onSelectSubject(sub)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
                       >
                         <span>View Chapters</span>
                         <ChevronRight className="w-3.5 h-3.5" />

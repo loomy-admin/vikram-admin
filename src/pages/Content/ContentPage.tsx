@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Video, FileText } from 'lucide-react';
 import {
   ClassItem,
   SubjectItem,
@@ -79,6 +79,13 @@ export const ContentPage: React.FC = () => {
   const [selectedTopic, setSelectedTopic] = useState<TopicItem | null>(null);
 
   const [contents, setContents] = useState<ContentItem[]>([]);
+
+  // Chapter-level Direct Content & Tab state
+  const [chapterActiveTab, setChapterActiveTab] = useState<'TOPICS' | 'CONTENT'>(
+    (getUrlParam('chapterTab') as 'TOPICS' | 'CONTENT') || 'TOPICS'
+  );
+  const [chapterDirectContents, setChapterDirectContents] = useState<ContentItem[]>([]);
+  const [isLoadingDirectContents, setIsLoadingDirectContents] = useState(false);
 
   // Loading States
   const [isLoadingClasses, setIsLoadingClasses] = useState(true);
@@ -245,6 +252,27 @@ export const ContentPage: React.FC = () => {
     fetchContents();
   }, [fetchContents]);
 
+  // 6. Fetch Chapter Direct Content when selectedChapter changes
+  const fetchChapterDirectContents = useCallback(async () => {
+    if (!selectedChapter) {
+      setChapterDirectContents([]);
+      return;
+    }
+    setIsLoadingDirectContents(true);
+    try {
+      const data = await contentApi.getContentByChapter(selectedChapter.id);
+      setChapterDirectContents(data);
+    } catch (err) {
+      setError(getErrorMessage(err, 'Failed to load chapter direct content'));
+    } finally {
+      setIsLoadingDirectContents(false);
+    }
+  }, [selectedChapter]);
+
+  useEffect(() => {
+    fetchChapterDirectContents();
+  }, [fetchChapterDirectContents]);
+
   // --------------------------------------------------------
   // REORDER HANDLERS (Dynamic Order Update)
   // --------------------------------------------------------
@@ -408,6 +436,46 @@ export const ContentPage: React.FC = () => {
     }
   };
 
+  const handleMoveDirectContent = async (index: number, direction: 'up' | 'down') => {
+    const newIndex = direction === 'up' ? index - 1 : index + 1;
+    if (newIndex < 0 || newIndex >= chapterDirectContents.length) return;
+
+    const newContents = [...chapterDirectContents];
+    const [moved] = newContents.splice(index, 1);
+    newContents.splice(newIndex, 0, moved);
+    setChapterDirectContents(newContents);
+
+    try {
+      await Promise.all(
+        newContents.map((c, idx) =>
+          contentApi.updateContent(c.id, { order: idx + 1 })
+        )
+      );
+      showSuccess('Direct content order updated');
+    } catch (err) {
+      showError(getErrorMessage(err, 'Failed to save content order'));
+    }
+  };
+
+  const handleDirectContentDrop = async (dragIndex: number, dropIndex: number) => {
+    if (dragIndex === dropIndex) return;
+    const newContents = [...chapterDirectContents];
+    const [draggedItem] = newContents.splice(dragIndex, 1);
+    newContents.splice(dropIndex, 0, draggedItem);
+    setChapterDirectContents(newContents);
+
+    try {
+      await Promise.all(
+        newContents.map((c, idx) =>
+          contentApi.updateContent(c.id, { order: idx + 1 })
+        )
+      );
+      showSuccess('Direct content reordered');
+    } catch (err) {
+      showError(getErrorMessage(err, 'Failed to save content order'));
+    }
+  };
+
   // --------------------------------------------------------
   // CRUD SAVE HANDLERS
   // --------------------------------------------------------
@@ -473,7 +541,13 @@ export const ContentPage: React.FC = () => {
       }
       setIsContentFormOpen(false);
       setContentToEdit(null);
-      fetchContents();
+      if (selectedTopic) {
+        fetchContents();
+      }
+      if (selectedChapter) {
+        fetchChapterDirectContents();
+        fetchChapters();
+      }
     } catch (err) {
       showError(getErrorMessage(err, 'Failed to save content'));
     }
@@ -513,7 +587,13 @@ export const ContentPage: React.FC = () => {
       } else if (deleteTarget.type === 'content') {
         await contentApi.deleteContent(deleteTarget.id);
         showSuccess(`Content "${deleteTarget.name}" deleted`);
-        fetchContents();
+        if (selectedTopic) {
+          fetchContents();
+        }
+        if (selectedChapter) {
+          fetchChapterDirectContents();
+          fetchChapters();
+        }
       }
     } catch (err) {
       showError(getErrorMessage(err, `Failed to delete ${deleteTarget.type}`));
@@ -585,7 +665,7 @@ export const ContentPage: React.FC = () => {
                     onClick={() => handleSelectClass(cls.id)}
                     className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                       isSelected
-                        ? 'bg-blue-600 text-white shadow-xs'
+                        ? 'bg-red-600 text-white shadow-xs'
                         : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
                     }`}
                   >
@@ -600,7 +680,7 @@ export const ContentPage: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsClassDrawerOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors shadow-2xs shrink-0"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors shadow-2xs shrink-0"
         >
           <Plus className="w-3.5 h-3.5" />
           Manage Classes
@@ -649,11 +729,25 @@ export const ContentPage: React.FC = () => {
           subject={selectedSubject}
           chapters={chapters}
           isLoading={isLoadingChapters}
-          onSelectChapter={(chapter) => {
+          onSelectChapter={(chapter, tab) => {
             setSelectedChapter(chapter);
             setSelectedTopic(null);
+            const activeTab = tab || 'TOPICS';
+            setChapterActiveTab(activeTab);
             setCurrentLevel('TOPICS');
-            updateUrlParams({ chapterId: chapter.id, topicId: null, level: 'TOPICS' });
+            updateUrlParams({
+              chapterId: chapter.id,
+              topicId: null,
+              level: 'TOPICS',
+              chapterTab: activeTab,
+            });
+          }}
+          onAddContentToChapter={(chapter) => {
+            setSelectedChapter(chapter);
+            setSelectedTopic(null);
+            setContentToEdit(null);
+            setChapterActiveTab('CONTENT');
+            setIsContentFormOpen(true);
           }}
           onAddChapter={() => {
             setChapterToEdit(null);
@@ -672,29 +766,112 @@ export const ContentPage: React.FC = () => {
       )}
 
       {currentLevel === 'TOPICS' && selectedChapter && (
-        <TopicsTableView
-          chapter={selectedChapter}
-          topics={topics}
-          isLoading={isLoadingTopics}
-          onSelectTopic={(topic) => {
-            setSelectedTopic(topic);
-            setCurrentLevel('CONTENT');
-            updateUrlParams({ topicId: topic.id, level: 'CONTENT' });
-          }}
-          onAddTopic={() => {
-            setTopicToEdit(null);
-            setIsTopicFormOpen(true);
-          }}
-          onEditTopic={(topic) => {
-            setTopicToEdit(topic);
-            setIsTopicFormOpen(true);
-          }}
-          onDeleteTopic={(topic) => {
-            setDeleteTarget({ type: 'topic', id: topic.id, name: topic.name });
-          }}
-          onReorder={handleMoveTopic}
-          onDragDrop={handleTopicDrop}
-        />
+        <div className="space-y-4">
+          {/* Chapter Sub-Navigation Tabs */}
+          <div className="bg-white rounded-xl border border-slate-200 p-2 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-2xs">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={() => {
+                  setChapterActiveTab('TOPICS');
+                  updateUrlParams({ chapterTab: 'TOPICS' });
+                }}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
+                  chapterActiveTab === 'TOPICS'
+                    ? 'bg-red-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+                }`}
+              >
+                <FileText className="w-4 h-4" />
+                <span>Topics ({topics.length})</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setChapterActiveTab('CONTENT');
+                  updateUrlParams({ chapterTab: 'CONTENT' });
+                }}
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-bold transition-all ${
+                  chapterActiveTab === 'CONTENT'
+                    ? 'bg-amber-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:bg-slate-100 border border-transparent'
+                }`}
+              >
+                <Video className="w-4 h-4" />
+                <span>Direct Content ({chapterDirectContents.length})</span>
+              </button>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedTopic(null);
+                  setContentToEdit(null);
+                  setChapterActiveTab('CONTENT');
+                  setIsContentFormOpen(true);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors shadow-2xs"
+              >
+                <Plus className="w-3.5 h-3.5 text-amber-600" />
+                Add Direct Content
+              </button>
+            </div>
+          </div>
+
+          {/* Show TopicsTableView if Topics tab active */}
+          {chapterActiveTab === 'TOPICS' && (
+            <TopicsTableView
+              chapter={selectedChapter}
+              topics={topics}
+              isLoading={isLoadingTopics}
+              onSelectTopic={(topic) => {
+                setSelectedTopic(topic);
+                setCurrentLevel('CONTENT');
+                updateUrlParams({ topicId: topic.id, level: 'CONTENT' });
+              }}
+              onAddTopic={() => {
+                setTopicToEdit(null);
+                setIsTopicFormOpen(true);
+              }}
+              onEditTopic={(topic) => {
+                setTopicToEdit(topic);
+                setIsTopicFormOpen(true);
+              }}
+              onDeleteTopic={(topic) => {
+                setDeleteTarget({ type: 'topic', id: topic.id, name: topic.name });
+              }}
+              onReorder={handleMoveTopic}
+              onDragDrop={handleTopicDrop}
+            />
+          )}
+
+          {/* Show ContentTableView for direct chapter content if Content tab active */}
+          {chapterActiveTab === 'CONTENT' && (
+            <ContentTableView
+              chapter={selectedChapter}
+              contents={chapterDirectContents}
+              isLoading={isLoadingDirectContents}
+              onAddContent={() => {
+                setSelectedTopic(null);
+                setContentToEdit(null);
+                setIsContentFormOpen(true);
+              }}
+              onEditContent={(content) => {
+                setSelectedTopic(null);
+                setContentToEdit(content);
+                setIsContentFormOpen(true);
+              }}
+              onDeleteContent={(content) => {
+                setDeleteTarget({ type: 'content', id: content.id, name: content.title });
+              }}
+              onPreviewContent={(content) => setPreviewContent(content)}
+              onReorder={handleMoveDirectContent}
+              onDragDrop={handleDirectContentDrop}
+            />
+          )}
+        </div>
       )}
 
       {currentLevel === 'CONTENT' && selectedTopic && (
@@ -763,7 +940,7 @@ export const ContentPage: React.FC = () => {
       )}
 
       {/* Content Dialog */}
-      {selectedTopic && (
+      {(selectedTopic || selectedChapter) && (
         <ContentFormDialog
           isOpen={isContentFormOpen}
           onClose={() => {
@@ -773,6 +950,7 @@ export const ContentPage: React.FC = () => {
           onSubmit={handleSaveContent}
           contentToEdit={contentToEdit}
           topic={selectedTopic}
+          chapter={!selectedTopic ? selectedChapter : null}
         />
       )}
 

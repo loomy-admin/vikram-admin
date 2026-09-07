@@ -81,7 +81,7 @@ export const GenerateCodeDialog: React.FC<GenerateCodeDialogProps> = ({
       <div className="bg-white rounded-xl border border-slate-200 shadow-xl max-w-md w-full p-6 space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+            <div className="p-2 rounded-lg bg-red-50 text-red-600">
               <KeyRound className="w-5 h-5" />
             </div>
             <h3 className="text-base font-bold text-slate-900">Generate Single Access Code</h3>
@@ -109,7 +109,7 @@ export const GenerateCodeDialog: React.FC<GenerateCodeDialogProps> = ({
               <select
                 value={selectedSchoolId}
                 onChange={(e) => setSelectedSchoolId(e.target.value ? Number(e.target.value) : '')}
-                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                className="w-full px-3 py-2 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500"
               >
                 <option value="">-- Select Active School --</option>
                 {schools.map((s) => (
@@ -135,7 +135,7 @@ export const GenerateCodeDialog: React.FC<GenerateCodeDialogProps> = ({
               <button
                 type="submit"
                 disabled={isLoading || !selectedSchoolId}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-xs disabled:opacity-50 flex items-center gap-2"
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-xs disabled:opacity-50 flex items-center gap-2"
               >
                 {isLoading && (
                   <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -146,8 +146,8 @@ export const GenerateCodeDialog: React.FC<GenerateCodeDialogProps> = ({
           </form>
         ) : (
           <div className="space-y-4 text-center py-2">
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl space-y-2">
-              <p className="text-xs font-semibold text-blue-800 uppercase tracking-wider">
+            <div className="p-4 bg-red-50 border border-red-200 rounded-xl space-y-2">
+              <p className="text-xs font-semibold text-red-800 uppercase tracking-wider">
                 Assigned to {generatedResult.schoolName}
               </p>
               <div className="font-mono text-3xl font-bold tracking-widest text-slate-900 py-1 select-all">
@@ -173,7 +173,7 @@ export const GenerateCodeDialog: React.FC<GenerateCodeDialogProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-xs"
+                className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-xs"
               >
                 Done
               </button>
